@@ -24,13 +24,60 @@ main :: proc() {
 
     gl.load_up_to(3,3, glfw.gl_set_proc_address)
 
-    vertices:= [?]f32 {
-        // positions       // colors        // texture coords
-         0.5,  0.5, 0.0,   1.0, 0.0, 0.0,   1.0, 1.0, // top right
-         0.5, -0.5, 0.0,   0.0, 1.0, 0.0,   1.0, 0.0, // bottom right
-        -0.5, -0.5, 0.0,   0.0, 0.0, 1.0,   0.0, 0.0, // bottom left
-        -0.5,  0.5, 0.0,   1.0, 1.0, 0.0,   0.0, 1.0  // top left
+    // configure global opengl state
+    gl.Enable(gl.DEPTH_TEST);
+
+    vertices:= [?]Vertex {
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={ 0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={ 0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={-0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={-0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={ 0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={-0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={-0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={-0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={-0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={-0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={-0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={ 0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={ 0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={ 0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={ 0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={ 0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={-0.5, -0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={-0.5, -0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={-0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
+        {position={ 0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={1.0, 1.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={ 0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={1.0, 0.0}},
+        {position={-0.5,  0.5,  0.5}, color={1,1,1}, tex_coord={0.0, 0.0}},
+        {position={-0.5,  0.5, -0.5}, color={1,1,1}, tex_coord={0.0, 1.0}},
     };
+
+    cube_positions := [?]Vec3 {
+        {0.0,  0.0,   0.0},
+        {2.0,  5.0, -15.0},
+        {1.5, -2.2,  -2.5},
+        {3.8, -2.0, -12.3},
+        {2.4, -0.4,  -3.5},
+        {1.7,  3.0,  -7.5},
+        {1.3, -2.0,  -2.5},
+        {1.5,  2.0,  -2.5},
+        {1.5,  0.2,  -1.5},
+        {1.3,  1.0,  -1.5},
+    }
 
     indices:= [?]u32 {
         0, 1, 3, // first triangle
@@ -74,7 +121,7 @@ main :: proc() {
         process_input(window);
 
         gl.ClearColor(0.2, 0.3, 0.3, 1.0);
-        gl.Clear(gl.COLOR_BUFFER_BIT);
+        gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         // bind Textures
         gl.ActiveTexture(gl.TEXTURE0);
@@ -82,19 +129,34 @@ main :: proc() {
         gl.ActiveTexture(gl.TEXTURE1);
         gl.BindTexture(gl.TEXTURE_2D, awesomeface_texture);
 
-        transform   := linalg.Matrix4f32(1)
-        translation := linalg.matrix4_translate_f32({0.5,-0.5,0})
-        rotation    := linalg.matrix4_rotate_f32(f32(glfw.GetTime()), {0,0,1})
-        scale       := linalg.matrix4_scale_f32({2,2,2})
-        transform    = translation * rotation * scale // order !!
 
         gl.UseProgram(shader_program);
 
-        transform_loc := gl.GetUniformLocation(shader_program, "transform");
-        gl.UniformMatrix4fv(transform_loc, 1, gl.FALSE, &transform[0][0]);
+
+        view        := mat4_translate({0,0,-3})
+        projection  := mat4_perspective(45, SCR_WIDTH/SCR_HEIGHT, 0.1, 100)
+
+
+
+
+
+        // model_loc := gl.GetUniformLocation(shader_program, "model");
+        // gl.UniformMatrix4fv(model_loc, 1, gl.FALSE, &model[0][0]);
+        view_loc := gl.GetUniformLocation(shader_program, "view");
+        gl.UniformMatrix4fv(view_loc, 1, gl.FALSE, &view[0][0]);
+        projection_loc := gl.GetUniformLocation(shader_program, "projection");
+        gl.UniformMatrix4fv(projection_loc, 1, gl.FALSE, &projection[0][0]);
 
         gl.BindVertexArray(VAO);
-        gl.DrawElements(gl.TRIANGLES, 6, gl.UNSIGNED_INT, rawptr(uintptr(0)));
+        for pos in cube_positions {
+            model  := Mat4_Identity
+            trans  := mat4_translate(pos)
+            rot    := mat4_rotate_euler(f32(glfw.GetTime()) * 20, {1, 0.3, 0.5})
+            model   = trans * rot
+            model_loc := gl.GetUniformLocation(shader_program, "model");
+            gl.UniformMatrix4fv(model_loc, 1, gl.FALSE, &model[0][0]);
+            gl.DrawArrays(gl.TRIANGLES, 0, 36)
+        }
 
         glfw.SwapBuffers(window);
         glfw.PollEvents();

@@ -74,7 +74,7 @@ shader_program_init :: proc(props: ShaderInitProps) -> u32 {
     return program
 }
 
-shader_arrays_init :: proc(VAO, VBO, EBO: ^u32, vertices: []f32, indices: []u32) {
+shader_arrays_init :: proc(VAO, VBO, EBO: ^u32, vertices: []Vertex, indices: []u32) {
     gl.GenVertexArrays(1, VAO);
     gl.GenBuffers(1, VBO);
 
@@ -83,7 +83,7 @@ shader_arrays_init :: proc(VAO, VBO, EBO: ^u32, vertices: []f32, indices: []u32)
     gl.BindVertexArray(VAO^);
 
     gl.BindBuffer(gl.ARRAY_BUFFER, VBO^);
-    gl.BufferData(gl.ARRAY_BUFFER, len(vertices) * size_of(f32), raw_data(vertices), gl.STATIC_DRAW);
+    gl.BufferData(gl.ARRAY_BUFFER, len(vertices) * size_of(Vertex), raw_data(vertices), gl.STATIC_DRAW);
 
     gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO^);
     gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices) * size_of(f32), raw_data(indices), gl.STATIC_DRAW);
