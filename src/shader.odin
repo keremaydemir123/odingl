@@ -11,6 +11,7 @@ ShaderInitProps :: struct {
 Vertex :: struct {
     position    : [3]f32,
     color       : [3]f32,
+    normal      : [3]f32,
     tex_coord   : [2]f32
 }
 
@@ -74,29 +75,34 @@ shader_program_init :: proc(props: ShaderInitProps) -> u32 {
     return program
 }
 
-shader_arrays_init :: proc(VAO, VBO, EBO: ^u32, vertices: []Vertex, indices: []u32) {
+setup_VAO :: proc(VAO: ^u32) {
     gl.GenVertexArrays(1, VAO);
-    gl.GenBuffers(1, VBO);
+}
 
-    gl.GenBuffers(1, EBO);
-
-    gl.BindVertexArray(VAO^);
-
-    gl.BindBuffer(gl.ARRAY_BUFFER, VBO^);
-    gl.BufferData(gl.ARRAY_BUFFER, len(vertices) * size_of(Vertex), raw_data(vertices), gl.STATIC_DRAW);
-
-    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO^);
-    gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices) * size_of(f32), raw_data(indices), gl.STATIC_DRAW);
-
+setup_attributes :: proc() {
     // position attribute
-    gl.VertexAttribPointer(0, 3, gl.FLOAT, gl.FALSE, 8 * size_of(f32), 0);
+    gl.VertexAttribPointer(0, 3, gl.FLOAT, gl.FALSE, 11 * size_of(f32), 0);
     gl.EnableVertexAttribArray(0);
     // color attribute
-    gl.VertexAttribPointer(1, 3, gl.FLOAT, gl.FALSE, 8 * size_of(f32), (3 * size_of(f32)));
+    gl.VertexAttribPointer(1, 3, gl.FLOAT, gl.FALSE, 11 * size_of(f32), (3 * size_of(f32)));
     gl.EnableVertexAttribArray(1);
-    // texture coord attribute
-    gl.VertexAttribPointer(2, 2, gl.FLOAT, gl.FALSE, 8 * size_of(f32), (6 * size_of(f32)));
+    // normal  attribute
+    gl.VertexAttribPointer(2, 3, gl.FLOAT, gl.FALSE, 11 * size_of(f32), (6 * size_of(f32)));
+    gl.EnableVertexAttribArray(2);
+    //  coord attribute
+    gl.VertexAttribPointer(3, 2, gl.FLOAT, gl.FALSE, 11 * size_of(f32), (9 * size_of(f32)));
     gl.EnableVertexAttribArray(2);
 
-    gl.BindVertexArray(0)
+}
+
+setup_VBO :: proc(VBO: ^u32, vertices: []Vertex) {
+    gl.GenBuffers(1, VBO);
+    gl.BindBuffer(gl.ARRAY_BUFFER, VBO^);
+    gl.BufferData(gl.ARRAY_BUFFER, len(vertices) * size_of(Vertex), raw_data(vertices), gl.STATIC_DRAW);
+}
+
+setup_EBO :: proc(EBO: ^u32, indices: []u32) {
+    gl.GenBuffers(1, EBO);
+    gl.BindBuffer(gl.ELEMENT_ARRAY_BUFFER, EBO^);
+    gl.BufferData(gl.ELEMENT_ARRAY_BUFFER, len(indices) * size_of(f32), raw_data(indices), gl.STATIC_DRAW);
 }
