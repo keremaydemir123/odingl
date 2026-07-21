@@ -91,7 +91,7 @@ setup_attributes :: proc() {
     gl.EnableVertexAttribArray(2);
     //  coord attribute
     gl.VertexAttribPointer(3, 2, gl.FLOAT, gl.FALSE, 11 * size_of(f32), (9 * size_of(f32)));
-    gl.EnableVertexAttribArray(2);
+    gl.EnableVertexAttribArray(3);
 
 }
 

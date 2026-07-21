@@ -174,6 +174,11 @@ main :: proc() {
 
         gl.UseProgram(basic_shader);
 
+        gl.Uniform1i(gl.GetUniformLocation(basic_shader, "texture1"), 0);
+        gl.ActiveTexture(gl.TEXTURE0);
+        gl.BindTexture(gl.TEXTURE_2D, ground_texture);
+
+
         view := linalg.matrix4_look_at_f32(camera_pos, camera_pos + camera_front, camera_up);
         projection  := mat4_perspective(camera_fov, f32(SCR_WIDTH)/f32(SCR_HEIGHT), 0.1, 100)
 
@@ -190,13 +195,9 @@ main :: proc() {
         gl.UniformMatrix4fv(gl.GetUniformLocation(basic_shader, "projection"), 1, gl.FALSE, &projection[0][0]);
         gl.UniformMatrix4fv(gl.GetUniformLocation(basic_shader, "model"), 1, gl.FALSE, &model[0][0]);
 
-        gl.Uniform1i(gl.GetUniformLocation(basic_shader, "texture1"), 0);
-        gl.ActiveTexture(gl.TEXTURE0);
-        gl.BindTexture(gl.TEXTURE_2D, ground_texture);
-
         gl.DrawArrays(gl.TRIANGLES, 0, 36)
 
-        // bind Textures
+
         gl.Uniform1i(gl.GetUniformLocation(basic_shader, "texture1"), 0);
         gl.ActiveTexture(gl.TEXTURE0);
         gl.BindTexture(gl.TEXTURE_2D, wall_texture);
